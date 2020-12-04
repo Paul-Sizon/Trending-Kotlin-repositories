@@ -17,13 +17,6 @@ class Adapter(events: ClickEvents) :
 
     private var reposList: List<RepoInfo> = emptyList()
     private val listener: ClickEvents = events
-//
-//    val cardView: CardView? = null
-//    val author: TextView? = null
-//    val name: TextView? = null
-//    val description: TextView? = null
-//    val avatar: ImageView? = null
-
 
 
     fun setNewList(newList: List<RepoInfo>) {
@@ -47,18 +40,12 @@ class Adapter(events: ClickEvents) :
         Glide.with(holder.itemView.context).load(currentItem.avatar)
             .apply(RequestOptions.circleCropTransform()).into(holder.avatar)
 
-        //holder.cardView.setOnClickListener { listener.onViewClicked(currentItem , holder.cardView) }
-        var url = currentItem.url
-        //holder.cardView.setOnClickListener { }
     }
 
     override fun getItemCount() = reposList.size
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(repos: RepoInfo, listener: ClickEvents) = with(itemView) {
-//            author.text = repos.author
-//            name.text = repos.name
-//            description.text = repos.description
             cardView.setOnClickListener { listener.onViewClicked(repos, cardView) }
         }
 

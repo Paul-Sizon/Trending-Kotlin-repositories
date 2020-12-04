@@ -31,7 +31,6 @@ class ListFragment : Fragment(), Adapter.ClickEvents {
         subscribeUi()
         subscribeObservers()
 
-
         setHasOptionsMenu(true)
         return binding.root
     }
@@ -40,6 +39,19 @@ class ListFragment : Fragment(), Adapter.ClickEvents {
         reload()
         adapter = Adapter(this)
         binding.recyclerView.adapter = adapter
+    }
+
+    private fun subscribeObservers(){
+        viewModel.repoLive.observe(viewLifecycleOwner, { response ->
+            if (response != null) {
+                val items: List<RepoInfo> = response
+                adapter.setNewList(items)
+                binding.progressBar.visibility = View.GONE
+            } else {
+                Toast.makeText(requireContext(), getString(R.string.pleaseConnect), Toast.LENGTH_SHORT).show()
+                binding.progressBar.visibility = View.GONE
+            }
+        })
     }
 
 
@@ -54,25 +66,12 @@ class ListFragment : Fragment(), Adapter.ClickEvents {
         } else {
             viewModel.getTheRepo("weekly")
         }
-    }
-
-    private fun subscribeObservers(){
-        viewModel.repoLive.observe(viewLifecycleOwner, { response ->
-            if (response != null) {
-                val items: List<RepoInfo> = response
-                adapter.setNewList(items)
-
-                //  Log.i("meow", items.toString())
-                //binding.progressBar.visibility = View.GONE
-            } else {
-                Toast.makeText(requireContext(), "Please connect to the internet", Toast.LENGTH_SHORT).show()
-                //binding.progressBar.visibility = View.GONE
-            }
-        })
+        binding.progressBar.visibility = View.VISIBLE
     }
 
 
 
+    /** settings to sort out */
     private fun showDialog() {
         val sharedPref: SharedPreferences =
             activity?.getSharedPreferences("SharedPrefs", Context.MODE_PRIVATE)!!
@@ -99,7 +98,15 @@ class ListFragment : Fragment(), Adapter.ClickEvents {
 
     }
 
+    /** interface */
+    override fun onViewClicked(repo: RepoInfo, view: View) {
+        val navController = findNavController()
+        val action = ListFragmentDirections.actionListFragmentToWebFragment(repo)
+        navController.navigate(action)
+    }
 
+
+    /** menu */
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu, menu)
     }
@@ -111,17 +118,7 @@ class ListFragment : Fragment(), Adapter.ClickEvents {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onViewClicked(repo: RepoInfo, view: View) {
-        Toast.makeText(requireContext(), repo.author, Toast.LENGTH_SHORT).show()
 
-//        val navController = findNavController()
-//        val action = ListFragmentDirections.actionListFragmentToWebFragment(repo)
-//
-//
-//        if (navController.currentDestination?.id == R.id.webFragment) {
-//            navController.navigate(action)
-//        }
-    }
 
 
 }

@@ -25,11 +25,9 @@ class WebFragment : Fragment() {
         binding = FragmentWebBinding.inflate(inflater, container, false)
 
         webView = binding.webview
-//        webView.webViewClient = WebViewClient()
-//
-//        args.repo?.url?.let { webView.loadUrl(it) }
+        webView.webViewClient = WebViewClient()
 
-
+        webView.loadUrl(args.repo?.url!!)
 
 
         return binding.root

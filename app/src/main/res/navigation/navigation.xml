@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/listFragment"
         android:name="com.mytest.myapplication.ui.list.ListFragment"
-        android:label="ListFragment" >
+        android:label="List of repositories" >
         <action
             android:id="@+id/action_listFragment_to_webFragment"
             app:destination="@id/webFragment"
@@ -23,7 +23,7 @@
     <fragment
         android:id="@+id/webFragment"
         android:name="com.mytest.myapplication.ui.web.WebFragment"
-        android:label="fragment_web"
+        android:label="Repository"
         tools:layout="@layout/fragment_web" >
     <argument
         android:name="repo"
